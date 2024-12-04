@@ -1,4 +1,4 @@
-use crate::days::AOCDay;
+use crate::days::AOCDaySingle;
 use std::{fs, path};
 
 #[derive(Debug)]
@@ -9,24 +9,20 @@ pub struct Day1 {
 
 fn _populate_list(list: &mut Vec<i32>, num: i32) { 
     let mut middle = list.len() / 2;
-    if middle == 0 {
-        list.push(num);
-        return;
-    }
 
     if num < list[middle] {
         while middle > 0 && num < list[middle-1] {
             middle -= 1;
         }
     } else {
-        while middle < list.len() && num > list[middle] {
+        while middle < list.len() - 1 && num > list[middle] {
             middle += 1;
         }
     }    
     list.insert(middle, num);
 }
 
-impl AOCDay for Day1 {
+impl AOCDaySingle<Self> for Day1 {
     fn interpret_input(file: &str) -> Self {
         // Collect the inputs of each list element (left, right) and insert into the appropriate
         // vector in a sorted manner.
@@ -53,13 +49,10 @@ impl AOCDay for Day1 {
             _populate_list(list1, num1);
             _populate_list(list2, num2);
         }
-        Day1 { list1: list_left, list2: list_right }
+        Self { list1: list_left, list2: list_right }
     }
 
     fn run(&self) {
-        for (x, y) in self.list1.iter().zip(self.list2.iter()) {
-            println!("Comparing {x} and {y} with dist {}", (x - y).abs());
-        }
         let sum: i32 = self.list1.iter().zip(self.list2.iter())
             .map(|(x, y)| (x - y).abs())
             .sum();

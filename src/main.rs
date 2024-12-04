@@ -1,10 +1,12 @@
 pub mod days;
 
-use std::{env, ops::Index};
+use std::env;
 
-use days::{day1::Day1, AOCDay};
+use days::*;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    Day1::interpret_input(&args[1]).run();
+    // Day1::interpret_input(&args[1]).run();
+    let filename = &args[1];
+    day2::Report::run(day2::Report::interpret_input(filename));
 }
