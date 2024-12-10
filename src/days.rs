@@ -12,5 +12,5 @@ pub trait AOCDaySingle<Rhs=Self> {
 pub trait AOCDay<Rhs=Self> {
     fn interpret_input(file: &str) -> Rhs;
 
-    fn run(items: Rhs);
+    fn run(filename: &str) -> bool;
 }

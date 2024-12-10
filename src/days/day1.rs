@@ -9,16 +9,15 @@ pub struct Day1 {
 
 fn _populate_list(list: &mut Vec<i32>, num: i32) { 
     let mut middle = list.len() / 2;
-
     if num < list[middle] {
         while middle > 0 && num < list[middle-1] {
             middle -= 1;
         }
     } else {
-        while middle < list.len() - 1 && num > list[middle] {
+        while middle < list.len() && num > list[middle] {
             middle += 1;
         }
-    }    
+    }
     list.insert(middle, num);
 }
 
@@ -29,7 +28,10 @@ impl AOCDaySingle<Self> for Day1 {
         let mut list_left: Vec<i32> = Vec::new();
         let mut list_right: Vec<i32> = Vec::new();
         for line in fs::read_to_string(path::Path::new(file))
-                .expect("Could not open file...").lines().into_iter() {
+                .expect("Could not open file...")
+                .lines()
+                .into_iter()
+        {
             let list1 = &mut list_left;
             let list2 = &mut list_right;
             let nums: Vec<i32> = line.split_whitespace()
@@ -57,5 +59,21 @@ impl AOCDaySingle<Self> for Day1 {
             .map(|(x, y)| (x - y).abs())
             .sum();
         println!("Got total distance of {sum}!");
+
+        let mut right: usize = 0;
+        let mut score: i32 = 0;
+        for (_, value) in self.list1.iter().enumerate() {
+            let mut occurences: usize = 0;
+            while *value >= self.list2[right] {
+                if *value == self.list2[right] {
+                    occurences += 1;
+                }
+                right += 1;
+            }
+            if occurences > 0 {
+                score += value * occurences as i32;
+            }
+        }
+        println!("Got similarity score of {score}.");
     }
 }
